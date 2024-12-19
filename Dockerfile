@@ -11,12 +11,11 @@ COPY image.jpg /app/image.jpg
 WORKDIR /app
 
 # Минимизация видеопотока
-CMD ["bash", "-c", "ffmpeg -i \"$STREAM_URL\" \
+CMD ["bash", "-c", "ffmpeg -re -i \"$STREAM_URL\" \
     -loop 1 -i \"/app/image.jpg\" \
     -c:v libx264 -preset ultrafast -tune zerolatency \
-    -vf \"scale=640:360\" -r 15 -b:v 400k \
-    -c:a aac -b:a 96k -ar 44100 \
+    -vf \"scale=640:360\" -r 1 -b:v 100k \
+    -c:a aac -b:a 64k -ar 44100 \
     -max_muxing_queue_size 1024 \
-    -rtbufsize 1500M -fflags +igndts -max_delay 500000 \
+    -max_delay 100000 -rtbufsize 100M \
     -shortest -f flv \"$TELEGRAM_RTMP_URL$TELEGRAM_STREAM_KEY\""]
-    
