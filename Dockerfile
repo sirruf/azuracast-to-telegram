@@ -1,15 +1,15 @@
-# Базовый образ с FFmpeg
-FROM jrottenberg/ffmpeg:latest
+# Обновляем и устанавливаем зависимости
+RUN apk add --no-cache ffmpeg bash curl
 
-# Копируем изображение и скрипт
+# Копируем картинку для видеопотока
 COPY image.jpg /app/image.jpg
-COPY start.sh /app/start.sh
-
-# Делаем скрипт исполняемым
-RUN chmod +x /app/start.sh
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Указываем, чтобы Docker использовал скрипт как команду запуска
-CMD ["/app/start.sh"]
+# Скрипт запуска
+CMD ["bash", "-c", "ffmpeg -re -i \"$STREAM_URL\" \
+    -loop 1 -i \"/app/image.jpg\" \
+    -c:v libx264 -preset ultrafast -tune zerolatency -shortest \
+    -c:a aac -b:a 128k -f flv \"$TELEGRAM_RTMP_URL$TELEGRAM_STREAM_KEY\""]
+    
