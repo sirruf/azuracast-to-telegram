@@ -1,3 +1,4 @@
+# Базовый образ с FFmpeg
 FROM jrottenberg/ffmpeg:latest
 
 # Копируем изображение и скрипт
@@ -10,5 +11,5 @@ RUN chmod +x /app/start.sh
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Запуск через sh
-CMD ["sh", "/app/start.sh"]
+# Указываем, чтобы Docker использовал скрипт как команду запуска
+CMD ["/app/start.sh"]
