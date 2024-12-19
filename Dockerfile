@@ -1,3 +1,5 @@
+FROM alpine:3.15
+
 # Обновляем и устанавливаем зависимости
 RUN apk add --no-cache ffmpeg bash curl
 
